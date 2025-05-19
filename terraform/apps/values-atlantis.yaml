@@ -5,7 +5,7 @@ atlantisUrl: " http://0.0.0.0"
 # Example:  http://10.0.0.0
 
 # -- Replace this with your own repo allowlist.
-orgAllowlist: "atlantis"
+orgAllowlist: "github.com/velychkov/atlantis"
 
 # -- Specify the log level for Atlantis.
 # Accepts: debug, info, warn, or error.
@@ -17,8 +17,8 @@ logLevel: "info"
 # Check values.yaml for examples.
 github:
   user: velychkov
-  token:
-  secret:
+  token: 
+  secret: 
 
 # -- If managing secrets outside the chart for the webhook, use this variable to reference the secret name
 # vcsSecretName: ""
