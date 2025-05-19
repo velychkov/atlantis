@@ -1,0 +1,33 @@
+version: 3
+projects:
+  - name: vpc
+    dir: terraform/vpc
+    workflow: dev-env
+    autoplan:
+      when_modified: ["*.tf", "env/dev.tfvars"]
+      enabled: true
+
+  - name: eks
+    dir: terraform/eks
+    workflow: dev-env
+    autoplan:
+      when_modified: ["*.tf", "env/dev.tfvars"]
+      enabled: true
+
+  - name: apps
+    dir: terraform/apps
+    workflow: dev-env
+    autoplan:
+      when_modified: ["*.tf", "env/dev.tfvars"]
+      enabled: true
+
+workflows:
+  dev-env:
+    plan:
+      steps:
+        - init
+        - plan:
+            extra_args: ["-var-file=env/dev.tfvars"]
+    apply:
+      steps:
+        - apply
