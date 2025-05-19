@@ -9,7 +9,6 @@ cluster_addons = {
   eks-pod-identity-agent = {}
   kube-proxy             = {}
   vpc-cni                = {}
-  amazon-ebs-csi-driver  = {}
 }
 
 cluster_endpoint_public_access = true
