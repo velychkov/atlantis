@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "alb_ingress" {
   }
 }
 
-data "aws_iam_policy_document" "eks_assume_role" {
+data "aws_iam_policy_document" "eks_assume_role_admin" {
   statement {
     effect = "Allow"
     principals {
@@ -32,8 +32,27 @@ data "aws_iam_policy_document" "eks_assume_role" {
       test     = "StringEquals"
       variable = "${data.aws_iam_openid_connect_provider.oidc_issuer_url.url}:sub"
       values   = [
-        "system:serviceaccount:kube-system:eks-admin",
-        "system:serviceaccount:kube-system:eks-read-only"
+        "system:serviceaccount:default:eks-admin"
+      ]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "eks_assume_role_read_only" {
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "Federated"
+      identifiers = [data.aws_iam_openid_connect_provider.oidc_provider_arn.arn]
+    }
+
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "${data.aws_iam_openid_connect_provider.oidc_issuer_url.url}:sub"
+      values   = [
+        "system:serviceaccount:default:eks-read-only"
       ]
     }
   }
@@ -41,12 +60,12 @@ data "aws_iam_policy_document" "eks_assume_role" {
 
 resource "aws_iam_role" "eks_admin" {
   name               = "${var.admin_sa_name}-role"
-  assume_role_policy = data.aws_iam_policy_document.eks_assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.eks_assume_role_admin.json
 }
 
 resource "aws_iam_role" "eks_read_only" {
   name               = "${var.read_only_sa_name}-role"
-  assume_role_policy = data.aws_iam_policy_document.eks_assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.eks_assume_role_read_only.json
 }
 
 resource "aws_iam_role" "alb_ingress" {
