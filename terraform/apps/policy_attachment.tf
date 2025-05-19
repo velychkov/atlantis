@@ -12,3 +12,23 @@ resource "aws_iam_role_policy_attachment" "eks_read_only_attach" {
   role       = aws_iam_role.eks_read_only.name
   policy_arn = "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess"
 }
+
+resource "aws_iam_role_policy_attachment" "karpenter_worker" {
+  role       = aws_iam_role.karpenter.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "karpenter_ecr" {
+  role       = aws_iam_role.karpenter.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+}
+
+resource "aws_iam_role_policy_attachment" "karpenter_ssm" {
+  role       = aws_iam_role.karpenter.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_role_policy_attachment" "karpenter_custom" {
+  role       = aws_iam_role.karpenter.name
+  policy_arn = aws_iam_policy.karpenter_policy.arn
+}
