@@ -1,7 +1,7 @@
 # -- An option to override the atlantis url,
 # if not using an ingress, set it to the external IP.
 # Check values.yaml for examples.
-atlantisUrl: " http://0.0.0.0"
+atlantisUrl: "http://k8s-default-atlantis-c37c062d85-2123044952.eu-west-1.elb.amazonaws.com"
 # Example:  http://10.0.0.0
 
 # -- Replace this with your own repo allowlist.
