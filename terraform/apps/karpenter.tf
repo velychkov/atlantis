@@ -26,38 +26,38 @@ resource "helm_release" "karpenter" {
   }
 }
 
-# resource "kubernetes_manifest" "karpenter_nodepool" {
-#   manifest = {
-#     "apiVersion" = "karpenter.sh/v1alpha5"
-#     "kind"       = "Provisioner"
-#     "metadata" = {
-#       "name"      = "default"
-#     }
-#     "spec" = {
-#       "requirements" = [
-#         {
-#           "key"      = "node.kubernetes.io/instance-type"
-#           "operator" = "In"
-#           "values"   = ["t3a.micro", "t3a.small", "t3a.medium"]
-#         },
-#         {
-#           "key"      = "topology.kubernetes.io/zone"
-#           "operator" = "In"
-#           "values"   = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-#         },
-#         {
-#           "key"      = "kubernetes.io/arch"
-#           "operator" = "In"
-#           "values"   = ["amd64"]
-#         }
-#       ]
-#       "provider" = {
-#         "instanceProfile" = "KarpenterNodeInstanceProfile"
-#         "subnetSelector" = {
-#           "karpenter.sh/discovery" = data.aws_eks_cluster.this.name
-#         }
-#       }
-#       "ttlSecondsAfterEmpty" = 30
-#     }
-#   }
-# }
+resource "kubernetes_manifest" "karpenter_nodepool" {
+  manifest = {
+    "apiVersion" = "karpenter.sh/v1alpha5"
+    "kind"       = "Provisioner"
+    "metadata" = {
+      "name"      = "default"
+    }
+    "spec" = {
+      "requirements" = [
+        {
+          "key"      = "node.kubernetes.io/instance-type"
+          "operator" = "In"
+          "values"   = ["t3a.micro", "t3a.small", "t3a.medium"]
+        },
+        {
+          "key"      = "topology.kubernetes.io/zone"
+          "operator" = "In"
+          "values"   = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+        },
+        {
+          "key"      = "kubernetes.io/arch"
+          "operator" = "In"
+          "values"   = ["amd64"]
+        }
+      ]
+      "provider" = {
+        "instanceProfile" = "KarpenterNodeInstanceProfile"
+        "subnetSelector" = {
+          "karpenter.sh/discovery" = data.aws_eks_cluster.this.name
+        }
+      }
+      "ttlSecondsAfterEmpty" = 30
+    }
+  }
+}
